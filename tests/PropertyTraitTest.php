@@ -11,6 +11,7 @@
 
 namespace Tests\Webinarium;
 
+require_once __DIR__ . '/EmptyClass.php';
 require_once __DIR__ . '/User.php';
 
 class PropertyTraitTest extends \PHPUnit_Framework_TestCase
@@ -123,4 +124,24 @@ class PropertyTraitTest extends \PHPUnit_Framework_TestCase
 
         $user->age = 12;
     }
+
+    public function testEmptyClassGetters()
+    {
+        $empty = new EmptyClass();
+
+        $reflection = new \ReflectionMethod($empty, 'getters');
+        $reflection->setAccessible(true);
+
+        self::assertCount(0, $reflection->invoke($empty));
+  }
+
+    public function testEmptyClassSetters()
+    {
+        $empty = new EmptyClass();
+
+        $reflection = new \ReflectionMethod($empty, 'setters');
+        $reflection->setAccessible(true);
+
+        self::assertCount(0, $reflection->invoke($empty));
+  }
 }
