@@ -8,7 +8,9 @@
 
 ## Tl;dr
 
-The library provides a trait to simulate automatic/custom properties as they are defined in C#.
+The library provides few helper traits:
+- to simulate automatic/custom properties as they are defined in C#,
+- to simulate object initialization on creation as it works in C#.
 
 ## Installation
 
@@ -232,6 +234,38 @@ Annotations are expensive. To work around this the trait caches parsed annotatio
 | Classic getter | 0.065 | 0.066 | 0.067 |
 | Magic `__get` function | 0.073 | 0.074 | 0.075 |
 | Using `PropertyTrait` | 0.173 | 0.175 | 0.177 |
+
+## Object initialization on creation
+
+Another nice C# feature lets you initialize object properties when you're creating the object. Taking the same `User` class from above you can create and setup new object in a classic way:
+
+```cs
+var user = new User();
+
+user.FirstName = "Artem";
+user.LastName  = "Rodygin";
+```
+
+or initialize the properties on creation:
+
+```cs
+var user = new User
+{
+    FirstName = "Artem",
+    LastName  = "Rodygin"
+};
+```
+
+The library provides another trait - `DataTransferObjectTrait` - to simulate such initialization. Assume we used this trait in our `User` PHP class, then new object can be created as following:
+
+```php
+$user = new User([
+    'firstName' => 'Artem',
+    'lastName'  => 'Rodygin',
+]);
+```
+
+The trait defines a default constructor which takes a single `array` argument. This is an associated array, where keys are names of the properties to initialize. If a property is not found for some of the keys, it will be just skipped.
 
 ## Development
 
