@@ -139,7 +139,7 @@ Well, it works, but it takes nearly the same amount of code as the original clas
 
 We can't change the PHP syntax, but we still can extend it using annotations. Really, if we had to write the annotations in the above example, why not reuse them instead of update all three magic functions each time we introduce a new property. And this is exactly what this library does, providing required functionality in the `PropertyTrait`.
 
-If you include the `PropertyTrait` in your class, the `@property` annotations become a required declarion regarding your properties. Let's refactor our class using the trait:
+If you include the `PropertyTrait` in your class, the `@property` annotations become a required declaration regarding your properties. Let's refactor our class using the trait:
 
 ```php
 /**
@@ -171,13 +171,13 @@ Maybe still not as elegant as the C# version, but much closer, isn't it?
 
 ## Automatic properties
 
-Using `@property` annotation you can expose any existing protected or private property. To make a property read-only (or write-only) use a `@property-read` (or `@property-write`) annotation instead. If you don't specify a `@property` annotation for some existing property, it will remain hidden.
+Using `@property` annotation you can expose any existing protected or private property. To make a property read-only (or write-only) use a `@property-read` (or `@property-write`) annotation instead. If you don't specify a `@property` annotation for some existing non-public property, it will remain hidden.
 
 ## Custom (virtual) properties
 
 The trait contains two protected functions - `getters` and `setters` - which can be overridden in your class. Both functions return associated array of anonymous functions, and keys of the array are names of your virtual properties.
 
-Let's assume we want to store some user-specific settings like user's language and user's timezone. We might have a lot of such configuration options and we don't want to bloat the related database table with thte same amount of columns, while all these settings can be stored in a single `settings` array:
+Let's assume we want to store some user-specific settings like user's language and user's timezone. We might have a lot of such configuration options and we don't want to bloat the related database table with the same amount of columns, while all these settings can be stored in a single `settings` array:
 
 ```php
 /**
@@ -226,7 +226,7 @@ Actually, you can provide your custom getters and setters via the `getters`/`set
 
 ## Performance
 
-Annotations are expensive. To work around this the trait caches parsed annotations in memory, so they are parsed only once (per web-request). Below is a table of few benchmarks for different ways to work with class properties. Each number is amount of seconds which took to read a property 100000 (one hundred thousand) times. Number are calculated from 5 sequental runs.
+Annotations are expensive. To work around this the trait caches parsed annotations in memory, so they are parsed only once (per web-request). Below is a table of few benchmarks for different ways to work with class properties. Each number is amount of seconds which took to read a property 100000 (one hundred thousand) times. Numbers are calculated from 5 sequental runs.
 
 | Method to read a property | Min time | Avg time | Max time |
 |:-------------------------------- | --------:| --------:| --------:|
