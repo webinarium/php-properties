@@ -102,7 +102,7 @@ trait PropertyTrait
     {
         self::$_annotations = [];
 
-        $class  = new \ReflectionClass($this);
+        $class  = new \ReflectionClass(self::class);
         $phpdoc = explode("\n", $class->getDocComment());
 
         foreach ($phpdoc as $line) {
