@@ -106,9 +106,9 @@ trait PropertyTrait
         $phpdoc = explode("\n", $class->getDocComment());
 
         foreach ($phpdoc as $line) {
-            // pattern = "@property[-read|-write] type $identifier"
-            if (preg_match('/@(property|property\-read|property\-write)\W+[A-Za-z][_A-Za-z\d]*\W+\$([A-Za-z][_A-Za-z\d]*)/', $line, $matches)) {
-                self::$_annotations[$matches[2]] = $matches[1];
+            // pattern = "@property[-read|-write] type[|type] $identifier"
+            if (preg_match('/@(property|property\-read|property\-write)\W+[A-Za-z][_A-Za-z\d]*(\|[A-Za-z][_A-Za-z\d]*)*\W+\$([A-Za-z][_A-Za-z\d]*)/', $line, $matches)) {
+                self::$_annotations[$matches[3]] = $matches[1];
             }
         }
     }

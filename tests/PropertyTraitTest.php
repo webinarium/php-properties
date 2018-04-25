@@ -73,6 +73,15 @@ class PropertyTraitTest extends \PHPUnit_Framework_TestCase
         $password = $user->password;
     }
 
+    public function testReadWriteNullableProperty()
+    {
+        $user = new User();
+        self::assertNull($user->timezone);
+
+        $user->timezone = 'UTC';
+        self::assertSame('UTC', $user->timezone);
+    }
+
     public function testReadWriteVirtualProperty()
     {
         $user = new User();

@@ -14,13 +14,13 @@ namespace Tests\Webinarium;
 use Webinarium\PropertyTrait;
 
 /**
- * @property-read  int    $id
- * @property       string $firstName
- * @property       string $lastName
- * @property-read  string $fullName
- * @property-write string $password
- * @property       string $locale
- * @property       string $timezone
+ * @property-read  int         $id
+ * @property       string      $firstName
+ * @property       string      $lastName
+ * @property-read  string      $fullName
+ * @property-write string      $password
+ * @property       string      $locale
+ * @property       null|string $timezone
  */
 class User
 {
@@ -45,7 +45,7 @@ class User
             },
 
             'timezone' => function () {
-                return $this->settings['timezone'] ?? 'UTC';
+                return $this->settings['timezone'] ?? null;
             },
         ];
     }
