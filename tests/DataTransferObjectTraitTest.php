@@ -19,14 +19,14 @@ class DataTransferObjectTraitTest extends \PHPUnit_Framework_TestCase
     {
         $command = new DTO();
 
-        self::assertEquals(1, $command->property);
+        self::assertSame(1, $command->property);
     }
 
     public function testInitialization()
     {
         $command = new DTO(['property' => 2]);
 
-        self::assertEquals(2, $command->property);
+        self::assertSame(2, $command->property);
     }
 
     public function testInitializationEmptyString()

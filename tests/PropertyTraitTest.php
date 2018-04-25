@@ -22,7 +22,7 @@ class PropertyTraitTest extends \PHPUnit_Framework_TestCase
         self::assertNull($user->firstName);
 
         $user->firstName = 'Anna';
-        self::assertEquals('Anna', $user->firstName);
+        self::assertSame('Anna', $user->firstName);
     }
 
     public function testReadOnlyExistingProperty()
@@ -34,7 +34,7 @@ class PropertyTraitTest extends \PHPUnit_Framework_TestCase
         $reflection->setAccessible(true);
         $reflection->setValue($user, 1234);
 
-        self::assertEquals(1234, $user->id);
+        self::assertSame(1234, $user->id);
     }
 
     /**
@@ -59,7 +59,7 @@ class PropertyTraitTest extends \PHPUnit_Framework_TestCase
 
         $user->password = 'secret';
 
-        self::assertEquals(md5('secret'), $reflection->getValue($user));
+        self::assertSame(md5('secret'), $reflection->getValue($user));
     }
 
     /**
@@ -76,10 +76,10 @@ class PropertyTraitTest extends \PHPUnit_Framework_TestCase
     public function testReadWriteVirtualProperty()
     {
         $user = new User();
-        self::assertEquals('en', $user->locale);
+        self::assertSame('en', $user->locale);
 
         $user->locale = 'ru';
-        self::assertEquals('ru', $user->locale);
+        self::assertSame('ru', $user->locale);
     }
 
     public function testReadOnlyVirtualProperty()
@@ -89,7 +89,7 @@ class PropertyTraitTest extends \PHPUnit_Framework_TestCase
 
         $user->firstName = 'Anna';
         $user->lastName  = 'Rodygina';
-        self::assertEquals('Anna Rodygina', $user->fullName);
+        self::assertSame('Anna Rodygina', $user->fullName);
     }
 
     /**
