@@ -50,7 +50,7 @@ trait PropertyTrait
 
         return isset($getters[$name])
             ? $getters[$name]()
-            : $this->$name;
+            : $this->$name ?? null;
     }
 
     /**

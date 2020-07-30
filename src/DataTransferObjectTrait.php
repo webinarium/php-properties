@@ -23,25 +23,9 @@ trait DataTransferObjectTrait
      */
     public function __construct(array $values = null)
     {
-        /**
-         * Replaces empty strings with nulls.
-         *
-         * @param mixed $value A value to be updated. Can be an array.
-         *
-         * @return mixed Updated value.
-         */
-        $empty2null = function ($value) use (&$empty2null) {
+        $data = $values ?? [];
 
-            if (is_array($value)) {
-                return array_map($empty2null, $value);
-            }
-
-            return is_string($value) && mb_strlen($value) === 0 ? null : $value;
-        };
-
-        $data = $empty2null($values ?? []);
-
-        $properties = array_keys(get_object_vars($this));
+        $properties = array_keys(get_class_vars(static::class));
 
         foreach ($properties as $property) {
             if (array_key_exists($property, $data)) {
