@@ -6,15 +6,16 @@
     "homepage": "https://github.com/webinarium/php-properties",
     "license": "MIT",
     "require": {
-        "php": ">=7.0"
+        "php": ">=7.4"
     },
     "require-dev": {
-        "phpunit/phpunit": "^5.4",
-        "friendsofphp/php-cs-fixer": "^2.3"
+        "phpunit/phpunit": "^7.0",
+        "friendsofphp/php-cs-fixer": "^2.16"
     },
     "autoload": {
         "psr-4": {
-            "Webinarium\\": "src/"
+            "Webinarium\\": "src/",
+            "Tests\\Webinarium\\": "tests/"
         }
     },
     "config": {

@@ -8,14 +8,14 @@
          bootstrap="vendor/autoload.php"
 >
     <testsuites>
-        <testsuite name="PHP Dictionary Test Suite">
-            <directory>./tests</directory>
+        <testsuite name="PHP Properties Test Suite">
+            <directory>tests</directory>
         </testsuite>
     </testsuites>
 
     <filter>
-        <whitelist>
-            <directory>./src</directory>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">src</directory>
         </whitelist>
     </filter>
 </phpunit>

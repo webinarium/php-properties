@@ -1,4 +1,4 @@
-[![PHP](https://img.shields.io/badge/PHP-7.0%2B-blue.svg)](https://secure.php.net/migration70)
+[![PHP](https://img.shields.io/badge/PHP-7.4%2B-blue.svg)](https://secure.php.net/migration74)
 [![Latest Stable Version](https://poser.pugx.org/webinarium/php-properties/v/stable)](https://packagist.org/packages/webinarium/php-properties)
 [![Build Status](https://travis-ci.org/webinarium/php-properties.svg?branch=master)](https://travis-ci.org/webinarium/php-properties)
 [![Code Coverage](https://scrutinizer-ci.com/g/webinarium/php-properties/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/webinarium/php-properties/?branch=master)
@@ -27,9 +27,9 @@ Let's assume we need a class to represent a user's entity (quite popular case in
 ```php
 class User
 {
-    protected $id;
-    protected $firstName;
-    protected $lastName;
+    protected int $id;
+    protected string $firstName;
+    protected string $lastName;
 
     public function getId(): int
     {
@@ -96,9 +96,9 @@ Of course, the first thought is magic methods, so we can rewrite the class as fo
  */
 class User
 {
-    protected $id;
-    protected $firstName;
-    protected $lastName;
+    protected int $id;
+    protected string $firstName;
+    protected string $lastName;
 
     public function __isset($name)
     {
@@ -152,16 +152,14 @@ class User
 {
     use PropertyTrait;
 
-    protected $id;
-    protected $firstName;
-    protected $lastName;
+    protected int $id;
+    protected string $firstName;
+    protected string $lastName;
 
     protected function getters(): array
     {
         return [
-            'fullName' => function () {
-                return $this->firstName . ' ' . $this->lastName;
-            },
+            'fullName' => fn (): string => $this->firstName . ' ' . $this->lastName,
         ];
     }
 }
@@ -190,19 +188,13 @@ class User
     use PropertyTrait;
 
     ...
-    protected $settings;
+    protected array $settings;
 
     protected function getters(): array
     {
         return [
-
-            'language' => function () {
-                return $this->settings['language'] ?? 'en';
-            },
-
-            'timezone' => function () {
-                return $this->settings['timezone'] ?? 'UTC';
-            },
+            'language' => fn (): string => $this->settings['language'] ?? 'en',
+            'timezone' => fn (): string => $this->settings['timezone'] ?? 'UTC',
         ];
     }
 
@@ -210,11 +202,11 @@ class User
     {
         return [
 
-            'language' => function ($value) {
+            'language' => function (string $value): void {
                 $this->settings['language'] = $value;
             },
 
-            'timezone' => function ($value) {
+            'timezone' => function (string $value): void {
                 $this->settings['timezone'] = $value;
             },
         ];

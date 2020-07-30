@@ -2,7 +2,7 @@
 
 //----------------------------------------------------------------------
 //
-//  Copyright (C) 2017 Artem Rodygin
+//  Copyright (C) 2017-2020 Artem Rodygin
 //
 //  You should have received a copy of the MIT License along with
 //  this file. If not, see <http://opensource.org/licenses/MIT>.
@@ -26,27 +26,18 @@ class User
 {
     use PropertyTrait;
 
-    protected $id;
-    protected $firstName;
-    protected $lastName;
-    protected $password;
-    protected $settings;
+    protected int     $id;
+    protected string  $firstName;
+    protected string  $lastName;
+    protected ?string $password = null;
+    protected array   $settings = [];
 
     protected function getters(): array
     {
         return [
-
-            'fullName' => function () {
-                return $this->firstName . ' ' . $this->lastName;
-            },
-
-            'locale' => function () {
-                return $this->settings['locale'] ?? 'en';
-            },
-
-            'timezone' => function () {
-                return $this->settings['timezone'] ?? null;
-            },
+            'fullName' => fn () => ($this->firstName ?? null) . ' ' . ($this->lastName ?? null),
+            'locale'   => fn () => $this->settings['locale'] ?? 'en',
+            'timezone' => fn () => $this->settings['timezone'] ?? null,
         ];
     }
 
@@ -54,15 +45,15 @@ class User
     {
         return [
 
-            'password' => function ($value) {
+            'password' => function (string $value): void {
                 $this->password = md5($value);
             },
 
-            'locale' => function ($value) {
+            'locale' => function (string $value): void {
                 $this->settings['locale'] = $value;
             },
 
-            'timezone' => function ($value) {
+            'timezone' => function (string $value): void {
                 $this->settings['timezone'] = $value;
             },
         ];

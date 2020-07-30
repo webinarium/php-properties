@@ -2,7 +2,7 @@
 
 //----------------------------------------------------------------------
 //
-//  Copyright (C) 2017 Artem Rodygin
+//  Copyright (C) 2017-2020 Artem Rodygin
 //
 //  You should have received a copy of the MIT License along with
 //  this file. If not, see <http://opensource.org/licenses/MIT>.
@@ -11,11 +11,33 @@
 
 namespace Tests\Webinarium;
 
+use PHPUnit\Framework\TestCase;
+
 require_once __DIR__ . '/EmptyClass.php';
 require_once __DIR__ . '/User.php';
 
-class PropertyTraitTest extends \PHPUnit_Framework_TestCase
+/**
+ * @coversDefaultClass \Webinarium\PropertyTrait
+ */
+class PropertyTraitTest extends TestCase
 {
+    /**
+     * @covers ::__isset
+     * @covers ::parseAnnotations
+     */
+    public function testIsSet()
+    {
+        $user = new User();
+        self::assertEmpty($user->id);
+    }
+
+    /**
+     * @covers ::__get
+     * @covers ::__set
+     * @covers ::getters
+     * @covers ::parseAnnotations
+     * @covers ::setters
+     */
     public function testReadWriteExistingProperty()
     {
         $user = new User();
@@ -25,6 +47,11 @@ class PropertyTraitTest extends \PHPUnit_Framework_TestCase
         self::assertSame('Anna', $user->firstName);
     }
 
+    /**
+     * @covers ::__get
+     * @covers ::getters
+     * @covers ::parseAnnotations
+     */
     public function testReadOnlyExistingProperty()
     {
         $user = new User();
@@ -38,16 +65,25 @@ class PropertyTraitTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Unknown write property: id
+     * @covers ::__set
+     * @covers ::parseAnnotations
+     * @covers ::setters
      */
     public function testReadOnlyExistingPropertyException()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Unknown write property: id');
+
         $user = new User();
 
         $user->id = 1234;
     }
 
+    /**
+     * @covers ::__set
+     * @covers ::parseAnnotations
+     * @covers ::setters
+     */
     public function testWriteOnlyExistingProperty()
     {
         $user = new User();
@@ -63,16 +99,27 @@ class PropertyTraitTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Unknown read property: password
+     * @covers ::__get
+     * @covers ::getters
+     * @covers ::parseAnnotations
      */
     public function testWriteOnlyExistingPropertyException()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Unknown read property: password');
+
         $user = new User();
 
         $password = $user->password;
     }
 
+    /**
+     * @covers ::__get
+     * @covers ::__set
+     * @covers ::getters
+     * @covers ::parseAnnotations
+     * @covers ::setters
+     */
     public function testReadWriteNullableProperty()
     {
         $user = new User();
@@ -82,6 +129,13 @@ class PropertyTraitTest extends \PHPUnit_Framework_TestCase
         self::assertSame('UTC', $user->timezone);
     }
 
+    /**
+     * @covers ::__get
+     * @covers ::__set
+     * @covers ::getters
+     * @covers ::parseAnnotations
+     * @covers ::setters
+     */
     public function testReadWriteVirtualProperty()
     {
         $user = new User();
@@ -91,6 +145,13 @@ class PropertyTraitTest extends \PHPUnit_Framework_TestCase
         self::assertSame('ru', $user->locale);
     }
 
+    /**
+     * @covers ::__get
+     * @covers ::__set
+     * @covers ::getters
+     * @covers ::parseAnnotations
+     * @covers ::setters
+     */
     public function testReadOnlyVirtualProperty()
     {
         $user = new User();
@@ -102,38 +163,54 @@ class PropertyTraitTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Unknown write property: fullName
+     * @covers ::__set
+     * @covers ::parseAnnotations
+     * @covers ::setters
      */
     public function testReadOnlyVirtualPropertyException()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Unknown write property: fullName');
+
         $user = new User();
 
         $user->fullName = 'Anna Rodygina';
     }
 
     /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Unknown read property: age
+     * @covers ::__get
+     * @covers ::getters
+     * @covers ::parseAnnotations
      */
     public function testReadUnknownPropertyException()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Unknown read property: age');
+
         $user = new User();
 
         $age = $user->age;
     }
 
     /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Unknown write property: age
+     * @covers ::__set
+     * @covers ::parseAnnotations
+     * @covers ::setters
      */
     public function testWriteUnknownPropertyException()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Unknown write property: age');
+
         $user = new User();
 
         $user->age = 12;
     }
 
+    /**
+     * @covers ::getters
+     * @covers ::parseAnnotations
+     */
     public function testEmptyClassGetters()
     {
         $empty = new EmptyClass();
@@ -142,8 +219,12 @@ class PropertyTraitTest extends \PHPUnit_Framework_TestCase
         $reflection->setAccessible(true);
 
         self::assertCount(0, $reflection->invoke($empty));
-  }
+    }
 
+    /**
+     * @covers ::parseAnnotations
+     * @covers ::setters
+     */
     public function testEmptyClassSetters()
     {
         $empty = new EmptyClass();
@@ -152,5 +233,5 @@ class PropertyTraitTest extends \PHPUnit_Framework_TestCase
         $reflection->setAccessible(true);
 
         self::assertCount(0, $reflection->invoke($empty));
-  }
+    }
 }

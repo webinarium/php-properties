@@ -2,7 +2,7 @@
 
 //----------------------------------------------------------------------
 //
-//  Copyright (C) 2017 Artem Rodygin
+//  Copyright (C) 2017-2020 Artem Rodygin
 //
 //  You should have received a copy of the MIT License along with
 //  this file. If not, see <http://opensource.org/licenses/MIT>.
@@ -17,14 +17,14 @@ namespace Webinarium;
 trait PropertyTrait
 {
     /** @var array Cached annotations. */
-    private static $_annotations;
+    private static array $_annotations;
 
     /**
      * {@inheritdoc}
      */
     public function __isset($name)
     {
-        if (self::$_annotations === null) {
+        if (!isset(self::$_annotations)) {
             $this->parseAnnotations();
         }
 
@@ -36,7 +36,7 @@ trait PropertyTrait
      */
     public function __get($name)
     {
-        if (self::$_annotations === null) {
+        if (!isset(self::$_annotations)) {
             $this->parseAnnotations();
         }
 
@@ -50,7 +50,7 @@ trait PropertyTrait
 
         return isset($getters[$name])
             ? $getters[$name]()
-            : $this->$name ?? null;
+            : $this->{$name} ?? null;
     }
 
     /**
@@ -58,7 +58,7 @@ trait PropertyTrait
      */
     public function __set($name, $value)
     {
-        if (self::$_annotations === null) {
+        if (!isset(self::$_annotations)) {
             $this->parseAnnotations();
         }
 
@@ -72,7 +72,7 @@ trait PropertyTrait
 
         isset($setters[$name])
             ? $setters[$name]($value)
-            : $this->$name = $value;
+            : $this->{$name} = $value;
     }
 
     /**
